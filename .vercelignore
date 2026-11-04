@@ -1,0 +1,9 @@
+.superpowers
+.git
+.github
+tests
+docs
+supabase
+data/*.sqlite
+data/*.sqlite-journal
+*.log
