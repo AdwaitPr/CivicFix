@@ -66,7 +66,7 @@ export const BoundingBoxQuerySchema = z.object({
     .regex(/^[a-z0-9-]+$/)
     .optional(),
   status: z.enum(REPORT_STATUS_VALUES).optional(),
-  limit: z.coerce.number().int().min(1).max(500).default(250),
+  limit: z.coerce.number().int().min(1).max(500).default(250).optional(),
 });
 
 export type BoundingBoxQueryParams = z.infer<typeof BoundingBoxQuerySchema>;
