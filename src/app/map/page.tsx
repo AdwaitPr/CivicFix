@@ -37,8 +37,8 @@ function MapExplorerContent() {
 
   useEffect(() => {
     fetch("/api/categories")
-      .then((r) => r.json())
-      .then((d) => setCategories(d.categories || []))
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setCategories(d?.categories || []))
       .catch(() => null);
   }, []);
 
@@ -50,8 +50,12 @@ function MapExplorerContent() {
 
     try {
       const res = await fetch(url);
-      const data = await res.json();
-      setReports(data.reports || []);
+      if (res.ok) {
+        const data = await res.json();
+        setReports(data.reports || []);
+      } else {
+        setReports([]);
+      }
     } catch {
       setReports([]);
     } finally {

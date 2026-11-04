@@ -26,18 +26,18 @@ export default function LandingPage() {
 
   useEffect(() => {
     fetch("/api/analytics")
-      .then((r) => r.json())
-      .then(setAnalytics)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => (d && d.summary ? setAnalytics(d) : null))
       .catch(() => null);
 
     fetch("/api/categories")
-      .then((r) => r.json())
-      .then((d) => setCategories(d.categories || []))
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setCategories(d?.categories || []))
       .catch(() => null);
 
     fetch("/api/reports?limit=15")
-      .then((r) => r.json())
-      .then((d) => setPreviewReports(d.reports || []))
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setPreviewReports(d?.reports || []))
       .catch(() => null);
   }, []);
 
@@ -116,7 +116,7 @@ export default function LandingPage() {
                 Pending Active
               </p>
               <p className="text-2xl font-extrabold text-slate-900">
-                {analytics?.summary.pending_active_count ?? "—"}
+                {analytics?.summary?.pending_active_count ?? "—"}
               </p>
               <p className="text-[11px] text-slate-400">Open citizen submissions</p>
             </div>
@@ -131,7 +131,7 @@ export default function LandingPage() {
                 Verified Resolved
               </p>
               <p className="text-2xl font-extrabold text-slate-900">
-                {analytics?.summary.resolved_count ?? "—"}
+                {analytics?.summary?.resolved_count ?? "—"}
               </p>
               <p className="text-[11px] text-slate-400">Completed physical repairs</p>
             </div>
@@ -146,7 +146,7 @@ export default function LandingPage() {
                 Closed / Out-of-Scope
               </p>
               <p className="text-2xl font-extrabold text-slate-900">
-                {analytics?.summary.closed_rejected_count ?? "—"}
+                {analytics?.summary?.closed_rejected_count ?? "—"}
               </p>
               <p className="text-[11px] text-slate-400">Duplicates or non-actionable</p>
             </div>

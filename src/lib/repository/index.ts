@@ -31,9 +31,13 @@ export async function getCivicFixRepository(): Promise<ICivicFixRepository> {
     }
   }
 
-  const adapter = await SqliteAdapter.create(resolvedPath);
-  initSqliteSchema(adapter, true);
-  repoInstance = new SqliteCivicFixRepository(adapter);
-
-  return repoInstance;
+  try {
+    const adapter = await SqliteAdapter.create(resolvedPath);
+    initSqliteSchema(adapter, true);
+    repoInstance = new SqliteCivicFixRepository(adapter);
+    return repoInstance;
+  } catch (err) {
+    console.error("[CivicFix Repository Init Error]:", err);
+    throw err;
+  }
 }

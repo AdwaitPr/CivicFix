@@ -161,7 +161,9 @@ export default function CivicMapCanvas({
         )}
 
         <MarkerClusterGroup chunkedLoading>
-          {reports.map((report) => (
+          {(reports || [])
+            .filter((r) => r && typeof r.latitude === "number" && typeof r.longitude === "number")
+            .map((report) => (
             <Marker
               key={report.id}
               position={[report.latitude, report.longitude]}

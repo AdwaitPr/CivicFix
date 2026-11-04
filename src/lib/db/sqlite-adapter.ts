@@ -1,4 +1,6 @@
-import initSqlJs, { Database } from "sql.js";
+import type { Database } from "sql.js";
+// @ts-expect-error sql-wasm-inline.js does not have dedicated .d.ts
+import initSqlJsInline from "sql.js/dist/sql-wasm-inline.js";
 import fs from "fs";
 import path from "path";
 
@@ -6,7 +8,7 @@ export class SqliteAdapter {
   constructor(private db: Database, private filePath?: string) {}
 
   static async create(filePath?: string): Promise<SqliteAdapter> {
-    const SQL = await initSqlJs();
+    const SQL = await initSqlJsInline();
     let db: Database;
     if (filePath && fs.existsSync(filePath)) {
       const buffer = fs.readFileSync(filePath);

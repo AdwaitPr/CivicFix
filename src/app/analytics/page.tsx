@@ -18,13 +18,13 @@ export default function AnalyticsPage() {
 
   useEffect(() => {
     fetch("/api/analytics")
-      .then((r) => r.json())
-      .then(setAnalytics)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => (d && d.summary ? setAnalytics(d) : null))
       .catch(() => null)
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading || !analytics) {
+  if (loading || !analytics || !analytics.summary) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-16 text-center text-xs text-slate-500">
         Aggregating live platform metrics...
