@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -13,10 +13,10 @@ import {
 } from "lucide-react";
 import { DynamicCivicMap } from "@/components/map/DynamicCivicMap";
 import { STATUS_BADGE_COLORS } from "@/components/map/CategoryMarker";
-import type { MapReportItem, IssueCategory, ReportStatus } from "@/lib/domain/types";
+import type { MapReportItem, IssueCategory } from "@/lib/domain/types";
 import type { BoundingBoxCoords } from "@/components/map/CivicMapCanvas";
 
-export default function PublicMapPage() {
+function MapExplorerContent() {
   const searchParams = useSearchParams();
   const initialCat = searchParams.get("category") || "";
 
@@ -28,7 +28,6 @@ export default function PublicMapPage() {
   const [mobileTab, setMobileTab] = useState<"map" | "list">("map");
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Default initial bounding box around default coordinates (Kanpur area)
   const [bbox, setBbox] = useState<BoundingBoxCoords>({
     west: 80.25,
     south: 26.38,
@@ -99,7 +98,6 @@ export default function PublicMapPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Status Dropdown */}
           <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
             <Filter className="w-3.5 h-3.5 text-slate-400" />
             <select
@@ -119,7 +117,6 @@ export default function PublicMapPage() {
             </select>
           </div>
 
-          {/* Mobile View Toggle */}
           <div className="flex sm:hidden border border-slate-200 rounded-lg overflow-hidden">
             <button
               onClick={() => setMobileTab("map")}
@@ -143,7 +140,6 @@ export default function PublicMapPage() {
 
       {/* Main Content Pane */}
       <div className="flex-1 flex overflow-hidden relative">
-        {/* Left Map View */}
         <div
           className={`flex-1 h-full relative ${
             mobileTab === "map" ? "block" : "hidden sm:block"
@@ -156,7 +152,6 @@ export default function PublicMapPage() {
           />
         </div>
 
-        {/* Right Side List / Detail Drawer */}
         <div
           className={`w-full sm:w-96 bg-white border-l border-slate-200 flex flex-col h-full overflow-hidden ${
             mobileTab === "list" ? "block" : "hidden sm:flex"
@@ -223,7 +218,6 @@ export default function PublicMapPage() {
             ))}
           </div>
 
-          {/* Active Report Slide-up / Detail Drawer */}
           {activeReport && (
             <div className="border-t border-slate-200 p-4 bg-white shadow-lg space-y-2">
               <div className="flex items-center justify-between">
@@ -258,5 +252,19 @@ export default function PublicMapPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PublicMapPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex-1 flex items-center justify-center text-xs text-slate-400">
+          Loading issue map...
+        </div>
+      }
+    >
+      <MapExplorerContent />
+    </Suspense>
   );
 }

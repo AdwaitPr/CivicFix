@@ -52,7 +52,7 @@ export class SqliteAdapter {
   }
 
   private persist() {
-    if (this.filePath) {
+    if (this.filePath && this.filePath !== ":memory:") {
       const dir = path.dirname(this.filePath);
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });

@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Search, Shield, Clock, ExternalLink, ArrowRight } from "lucide-react";
+import { Search, Shield, ArrowRight } from "lucide-react";
 import { STATUS_BADGE_COLORS } from "@/components/map/CategoryMarker";
 import type { ReportDetail } from "@/lib/domain/types";
 
-export default function TrackPage() {
+function TrackReportContent() {
   const searchParams = useSearchParams();
   const initialCode = searchParams.get("code") || "";
 
@@ -145,5 +145,19 @@ export default function TrackPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function TrackPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="max-w-4xl mx-auto px-4 py-16 text-center text-xs text-slate-400">
+          Loading tracker...
+        </div>
+      }
+    >
+      <TrackReportContent />
+    </Suspense>
   );
 }
