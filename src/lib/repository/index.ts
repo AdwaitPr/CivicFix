@@ -19,7 +19,8 @@ export async function getCivicFixRepository(): Promise<ICivicFixRepository> {
   }
 
   // Local SQLite Mode via WebAssembly sql.js
-  const dbPath = process.env.SQLITE_DB_PATH || "./data/civicfix.sqlite";
+  const defaultDbPath = process.env.VERCEL ? "/tmp/civicfix.sqlite" : "./data/civicfix.sqlite";
+  const dbPath = process.env.SQLITE_DB_PATH || defaultDbPath;
   let resolvedPath: string | undefined;
 
   if (dbPath !== ":memory:") {
