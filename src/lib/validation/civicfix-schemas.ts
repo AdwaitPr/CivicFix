@@ -1,9 +1,10 @@
 import { z } from "zod";
 import { sanitizePlainText } from "../security/sanitization";
 import { REPORT_STATUS_VALUES, ReportStatus } from "../domain/types";
+import { VALID_STATE_TRANSITIONS } from "../domain/fsm";
 
 export { sanitizePlainText };
-export { REPORT_STATUS_VALUES };
+export { REPORT_STATUS_VALUES, VALID_STATE_TRANSITIONS };
 
 export const CreateReportSchema = z
   .object({
