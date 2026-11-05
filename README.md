@@ -57,3 +57,5 @@ npm test
 - [Testing Runbook](docs/TESTING.md)
 - [Production Deployment Runbook](docs/DEPLOYMENT.md)
 - [Architecture Decision Records (ADRs)](docs/ADR/)
+- [Android Studio Agent Execution Plan](ANDROID_STUDIO_AGENT_PLAN.md)
+- [Android Mobile Conversion Readiness Report](docs/ANDROID_READINESS.md)
